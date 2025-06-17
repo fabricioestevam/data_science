@@ -42,7 +42,7 @@ function filtrarPorData(casos) {
 
 async function carregarDados() {
   try {
-    const res = await fetch('http://localhost:5000/api/casos');
+    const res = await fetch('https://backend-datascience-qu3o.onrender.com/api/casos');
     dadosCasos = await res.json();
     atualizarDashboard();
     inicializarGraficoModelo();
@@ -186,7 +186,7 @@ function criarGraficoCluster(dados) {
 
 async function inicializarGraficoModelo() {
   try {
-    const res = await fetch("http://localhost:5000/api/modelo/coeficientes");
+    const res = await fetch("https://backend-datascience-qu3o.onrender.com/api/modelo/coeficientes");
     const data = await res.json();
 
     const sorted = Object.entries(data).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0,10);
