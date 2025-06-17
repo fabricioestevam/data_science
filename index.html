@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Análise Criminal</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container-principal {
+      max-width: 1400px;
+      margin: auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+    .filtros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+    .filtros label {
+      color: white;
+      font-weight: bold;
+    }
+    input[type="date"], select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .estatisticas-box {
+      background: #00b894;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    .estatisticas-box h3 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 25px;
+    }
+    .grafico-box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .grafico-box h2 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      color: #2c3e50;
+      border-bottom: 2px solid #74b9ff;
+      padding-bottom: 5px;
+    }
+    .rosca-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      align-items: center;
+    }
+    #containergraficoModelo {
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    #containergraficoModelo h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 1.4em;
+      color: #2c3e50;
+    }
+    .loading {
+      text-align: center;
+      padding: 30px;
+      font-size: 1.2em;
+      color: #0984e3;
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .filtros {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-principal">
+    <h1>Dashboard de Análise Criminal</h1>
+
+    <div class="filtros">
+      <label for="dataInicio">Período de:</label>
+      <input type="date" id="dataInicio" />
+      <label for="dataFim">até:</label>
+      <input type="date" id="dataFim" />
+    </div>
+
+    <div class="estatisticas-box">
+      <h3 id="totalCasos">Carregando...</h3>
+      <p>Total de Casos Registrados</p>
+    </div>
+
+    <div class="container">
+      <div class="grafico-box">
+        <h2>Distribuição por Categoria</h2>
+        <div class="rosca-controls">
+          <label for="variavelRosca">Visualizar por:</label>
+          <select id="variavelRosca">
+            <option value="titulo">Tipo de Caso</option>
+            <option value="vitima.corEtnia">Etnia</option>
+            <option value="vitima.genero">Gênero</option>
+            <option value="geolocalizacao">Local</option>
+          </select>
+        </div>
+        <canvas id="graficoRosca"></canvas>
+      </div>
+
+      <div class="grafico-box">
+        <h2>Distribuição de Idades</h2>
+        <canvas id="graficoDistribuicao"></canvas>
+      </div>
+
+      <div class="grafico-box">
+        <h2>Comparativo por Gênero</h2>
+        <canvas id="graficoBoxplot"></canvas>
+      </div>
+
+      <div class="grafico-box">
+        <h2>Distribuição Espacial</h2>
+        <canvas id="graficoEspacial"></canvas>
+      </div>
+
+      <div class="grafico-box">
+        <h2>Distribuição Temporal</h2>
+        <canvas id="graficoTemporal"></canvas>
+      </div>
+
+      <div class="grafico-box">
+        <h2>Análise de Agrupamento</h2>
+        <canvas id="graficoCluster"></canvas>
+      </div>
+    </div>
+
+    <div id="containergraficoModelo">
+      <h3>Fatores do Modelo ML</h3>
+      <div class="loading">Carregando modelo...</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
